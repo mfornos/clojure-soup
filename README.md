@@ -4,7 +4,7 @@ Clojurized access for [Jsoup](http://jsoup.org/).
 
 ## Usage
 
-Getting all the links of web page:
+Getting all the links of a web page:
 
 ```clojure
 user=> (use 'jsoup.soup)
