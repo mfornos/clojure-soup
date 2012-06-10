@@ -1,11 +1,9 @@
 (ns ^{:doc "Clojurized access for Jsoup."} 
   jsoup.soup
   (:use clojure.walk)
-  (:import clojure.lang.ISeq
-           (org.jsoup Jsoup
-                      Connection
-                      Connection$Method)
-           (org.jsoup.nodes Element)
+  (:import (org.jsoup Jsoup Connection Connection$Method)
+           (org.jsoup.select Elements)
+           (org.jsoup.nodes Element Document)
            org.apache.commons.codec.binary.Base64))
 
 (def POST Connection$Method/POST) 
@@ -43,7 +41,8 @@
 (defn -connect[^Connection$Method method url & opts]
   "Creates a connection configured by the given opts."
   (let [connection (.method (org.jsoup.Jsoup/connect url) method)]
-  (if (nil? opts) connection (-configure connection opts)))) 
+  (if-not (nil? opts) (-configure connection opts))
+  connection)) 
 
 (defmulti parse
     "Parses a File, Inputstream or String and returns a Document instance."
@@ -64,29 +63,31 @@
   (let [content (apply slurp location opts)]
   (if(nil? opts) (parse content) (apply parse content opts))))
 
-(defmulti select
-  "Apply the selector to a hierarchy of Elements."
-  (fn [x selector] (class x)))
-
-(defmethod select Element [^Element doc selector]
-  (iterator-seq (.iterator (.select doc selector))))
-
-(defmethod select Connection [^Connection conn selector]
-  (select (.. conn (execute) (parse)) selector))
-
-(defmethod select ISeq [^ISeq elements selector]
-  (map #(.select % selector) elements))
-
-(defn get! [url selector & opts]
-  (select (apply -connect GET url opts) selector))
-
-(defn post! [url selector & opts]
-  (select (apply -connect POST url opts) selector))
+(defn select [selector doc] (.select doc selector))
 
 (defn basic-auth [username password]
   "Creates a basic authorization header."
   {"Authorization" (str "Basic " (String.  (Base64/encodeBase64 (.getBytes (str username ":" password)))))})
 
-(defn attr-seq [elements selector]
+;; See apricot-soup @github ;)
+(defmacro $ [doc & body]
+  (let [exprs (map #(if (string? %1) `(select ~%1)
+                      (if (symbol? %1)
+                        `(select ~(str %1))
+                         (if (keyword? %1)
+                           `(select ~(str "#"(name %1)))
+                            %1))) body)]
+     `(->> ~doc ~@exprs)))
+
+(defn exec [connection] (.. connection (execute) (parse)))
+
+(defn get![uri & opts]
+  (exec (apply -connect GET uri opts)))
+
+(defn post![uri & opts]
+  (exec (apply -connect POST uri opts)))
+
+;; TODO add some macros for filters and maps
+(defn attrs [elements selector]
   (map #(.attr % selector) elements))
 
