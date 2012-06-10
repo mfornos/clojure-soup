@@ -1,4 +1,4 @@
-# Soup
+# Closoup
 
 Clojurized access for [Jsoup](http://jsoup.org/).
 
