@@ -24,7 +24,7 @@
  (is (not= nil? document))
  (is (= {"http://base/../../../overview-summary.html" "Overview"} 
         (second ($ document "a[href]" (map (fn [e] {(.attr  e "abs:href") (.text e)}))))))
- (is (= "NavBarFont1" (first (attrs ($ document "td" "font") "class")))))))
+ (is (= "NavBarFont1" (first ($ document "td" "font" (attr "class"))))))))
 
 (deftest html-sample
   (testing "Html sample"
@@ -35,6 +35,13 @@
    (is (= ["An example link." "http://example.com/" "example"]
           [(.. doc (body) (text)) (.attr link "href") (.text link)]))
    (is (= "<a href=\"http://example.com/\"><b>example</b></a>" (.outerHtml link))))))
+
+(deftest more-html-test
+  (let [html "<p>An <a href='http://example.com/'><b>example</b></a> link.</p>"
+        doc (parse html) 
+        link (first ($ doc a))]
+  (is (= "http://example.com/" (.. (first ($ doc "p" "a")) (attr "href"))))
+  (is (= (list "An example link.") ($ doc "p" (text))))))
 
 (comment 
   ;; Tests to be mocked

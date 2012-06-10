@@ -9,11 +9,8 @@ Getting all the links of a web page:
 ```clojure
 user=> (use 'jsoup.soup)
 nil
-user=> ($ (get! "http://google.com" :user-agent "CoCo/1.0") "a[href]" (map (fn [e] (.attr  e "abs:href"))))
+user=> ($ (get! "http://google.com" :user-agent "CoCo/1.0") "a[href]" (attr "abs:href"))
 ("http://www.google..." ...)
-user=> (attrs ($ (get! "http://google.com" :user-agent "CoCo/1.0") "a[href]"))
-("http://www.google..." ...)
-
 ```
 A post with basic authentication:
 

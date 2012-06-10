@@ -77,7 +77,6 @@
   (let [content (apply slurp location opts)]
   (if(nil? opts) (parse content) (apply parse content opts))))
 
-;; See apricot-soup @github ;)
 (defmacro $ [doc & body]
   (let [exprs (map #(if (string? %1) `(select ~%1)
                       (if (symbol? %1)
@@ -85,9 +84,9 @@
                          (if (keyword? %1)
                            `(select ~(str "#"(name %1)))
                             %1))) body)]
-     `(->> ~doc ~@exprs)))
+     `(->> ~doc ~@exprs))) ;; See apricot-soup @github ;)
 
-;; TODO add some macros for filters and maps
-(defn attrs [elements selector]
-  (map #(.attr % selector) elements))
+(defn text [elements] (map #(.text %) elements))
+
+(defn attr [selector elements] (map #(.attr % selector) elements))
 
