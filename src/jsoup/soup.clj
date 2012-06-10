@@ -50,7 +50,7 @@
  	  (fn [x & opts] (string? x)))
 
 (defmethod parse true [content & opts]
-  (let [opts     (apply hash-map (flatten opts))
+  (let [opts     (apply hash-map opts)
         base-uri (get opts :base-uri)]
   (if (nil? base-uri) (org.jsoup.Jsoup/parse content) (org.jsoup.Jsoup/parse content base-uri))))
 
