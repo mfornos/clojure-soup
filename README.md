@@ -13,7 +13,7 @@ user=> (attr-seq (get! "http://google.com" "a[href]" :user-agent "CoCo/1.0") "ab
 ("http://www.google.es/imghp?hl=es&tab=wi" ...)
 
 ```
-A post with authentication:
+A post with basic authentication:
 
 ```clojure
 (post! "http://127.0.0.1"
@@ -28,7 +28,8 @@ A post with authentication:
 Parsing a local file:
 
 ```clojure
-(select (slurp-parse "test/resources/test-content.html" :encoding "UTF-8" :base-uri "http://base") "a[href]")
+(select 
+  (slurp-parse "test-content.html" :encoding "UTF-8" :base-uri "http://base") "a[href]")
 ```
 
 EOF
