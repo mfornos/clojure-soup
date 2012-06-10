@@ -75,11 +75,11 @@
   (let [content (apply slurp location opts)]
   (if(nil? opts) (parse content) (apply parse content opts))))
 
-(defmacro $ [doc & body]
+(defmacro $ [doc & forms]
   (let [exprs (map #(if (string? %) `(select ~%)
                       (if (symbol? %) `(select ~(str %))
                          (if (keyword? %) `(select ~(str "#"(name %)))
-                            %))) body)]
+                            %))) forms)]
      `(->> ~doc ~@exprs))) ;; See apricot-soup @github ;)
 
 (defn text [elements] (map #(.text %) elements))
