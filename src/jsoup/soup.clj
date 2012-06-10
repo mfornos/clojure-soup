@@ -59,15 +59,23 @@
         encoding  (get opts :encoding "UTF-8")]
   (if (nil? base-uri) (org.jsoup.Jsoup/parse file encoding) (org.jsoup.Jsoup/parse file encoding base-uri))))
 
-(defn slurp-parse [location & opts]
-  (let [content (apply slurp location opts)]
-  (if(nil? opts) (parse content) (apply parse content opts))))
-
 (defn select [selector doc] (.select doc selector))
 
 (defn basic-auth [username password]
   "Creates a basic authorization header."
   {"Authorization" (str "Basic " (String.  (Base64/encodeBase64 (.getBytes (str username ":" password)))))})
+
+(defn exec [connection] (.. connection (execute) (parse)))
+
+(defn get![uri & opts]
+  (exec (apply -connect GET uri opts)))
+
+(defn post![uri & opts]
+  (exec (apply -connect POST uri opts)))
+
+(defn slurp! [location & opts]
+  (let [content (apply slurp location opts)]
+  (if(nil? opts) (parse content) (apply parse content opts))))
 
 ;; See apricot-soup @github ;)
 (defmacro $ [doc & body]
@@ -78,14 +86,6 @@
                            `(select ~(str "#"(name %1)))
                             %1))) body)]
      `(->> ~doc ~@exprs)))
-
-(defn exec [connection] (.. connection (execute) (parse)))
-
-(defn get![uri & opts]
-  (exec (apply -connect GET uri opts)))
-
-(defn post![uri & opts]
-  (exec (apply -connect POST uri opts)))
 
 ;; TODO add some macros for filters and maps
 (defn attrs [elements selector]

@@ -29,7 +29,7 @@ A post with basic authentication:
 Parsing a local file:
 
 ```clojure
-($ (slurp-parse "test-content.html" :encoding "UTF-8" :base-uri "http://base") "a[href]")
+($ (slurp! "test-content.html" :encoding "UTF-8" :base-uri "http://base") "a[href]")
 ```
 
 EOF

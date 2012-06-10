@@ -20,7 +20,7 @@
 
 (deftest slurp-parse-test
  (testing "Parse file"
- (let [document (slurp-parse "test/resources/test-content.html" :encoding "UTF-8" :base-uri "http://base")]
+ (let [document (slurp! "test/resources/test-content.html" :encoding "UTF-8" :base-uri "http://base")]
  (is (not= nil? document))
  (is (= {"http://base/../../../overview-summary.html" "Overview"} 
         (second ($ document "a[href]" (map (fn [e] {(.attr  e "abs:href") (.text e)}))))))
