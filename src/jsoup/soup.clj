@@ -65,7 +65,7 @@
   "Creates a basic authorization header."
   {"Authorization" (str "Basic " (String.  (Base64/encodeBase64 (.getBytes (str username ":" password)))))})
 
-(defn exec [connection] (.. connection (execute) (parse)))
+(defn exec [^Connection connection] (.. connection (execute) (parse)))
 
 (defn get![uri & opts]
   (exec (apply -connect GET uri opts)))
@@ -78,12 +78,10 @@
   (if(nil? opts) (parse content) (apply parse content opts))))
 
 (defmacro $ [doc & body]
-  (let [exprs (map #(if (string? %1) `(select ~%1)
-                      (if (symbol? %1)
-                        `(select ~(str %1))
-                         (if (keyword? %1)
-                           `(select ~(str "#"(name %1)))
-                            %1))) body)]
+  (let [exprs (map #(if (string? %) `(select ~%)
+                      (if (symbol? %) `(select ~(str %))
+                         (if (keyword? %) `(select ~(str "#"(name %)))
+                            %))) body)]
      `(->> ~doc ~@exprs))) ;; See apricot-soup @github ;)
 
 (defn text [elements] (map #(.text %) elements))
