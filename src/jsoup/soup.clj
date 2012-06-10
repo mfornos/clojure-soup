@@ -2,8 +2,6 @@
   jsoup.soup
   (:use clojure.walk)
   (:import (org.jsoup Jsoup Connection Connection$Method)
-           (org.jsoup.select Elements)
-           (org.jsoup.nodes Element Document)
            org.apache.commons.codec.binary.Base64))
 
 (def POST Connection$Method/POST) 
