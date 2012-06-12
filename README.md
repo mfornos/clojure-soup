@@ -9,8 +9,7 @@ Getting some links of a web page:
 ```clojure
 (use 'jsoup.soup)
 
-($ 
- (get! "http://google.com" :user-agent "CoCo/1.0") ;; get request with options
+($ (get! "http://google.com" :user-agent "CoCo/1.0") ;; get request with options
  td "a[href]" ;; Jsoup selectors
  (attr "abs:href")) ;; attribute selector
 ```
