@@ -10,8 +10,8 @@ Getting some links of a web page:
 (use 'jsoup.soup)
 
 ($ (get! "http://google.com" :user-agent "CoCo/1.0") ;; get request with options
- td "a[href]" ;; Jsoup selectors
- (attr "abs:href")) ;; attribute selector
+   td "a[href]" ;; Jsoup selectors
+   (attr "abs:href")) ;; attribute selector
 ```
 A post with basic authentication:
 
