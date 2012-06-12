@@ -7,36 +7,30 @@
 (def POST Connection$Method/POST) 
 (def GET Connection$Method/GET) 
 
-(defn -configure[^Connection conn opts]
+(def ^:private params 
+  ["user-agent" "cookies", "data", "method", "referrer", "timeout", 
+   "url", "follow-redirects", "ignore-content-type", "ignore-http-errors"])
+
+(defn- to-fn-name [name] 
+  (let [words (clojure.string/split name #"[\s_-]+")] 
+    (apply str (first words) (map #(clojure.string/capitalize %) (rest words))))) 
+
+(defn- invoke [instance method & args] 
+  (clojure.lang.Reflector/invokeInstanceMethod instance method (to-array args))) 
+
+(defn -configure [^Connection connection opts]
   "Configures the connection."
   (let [opts       (apply hash-map opts)
         auth       (get opts :auth)
-        user-agent (get opts :user-agent)
-        cookies    (get opts :cookies)
-        data       (get opts :data)
-        method     (get opts :method)
-        referrer   (get opts :referrer)
-        timeout    (get opts :timeout)
-        url        (get opts :url)
-        headers    (get opts :headers)
-        follow-redirects    (get opts :follow-redirects)
-        ignore-content-type (get opts :ignore-content-type)
-        ignore-http-errors  (get opts :ignore-http-errors)]
-  (if-not (nil? user-agent) (.userAgent conn user-agent))
-  (if-not (nil? cookies) (.cookies conn (stringify-keys cookies)))
-  (if-not (nil? data) (.data conn (stringify-keys data)))
-  (if-not (nil? method) (.method conn method))
-  (if-not (nil? referrer) (.referrer conn referrer))
-  (if-not (nil? timeout) (.timeout conn timeout))
-  (if-not (nil? url) (.referrer conn url))
-  (if-not (nil? auth) (doseq [[k v] auth] (.header conn k v)))
-  (if-not (nil? follow-redirects) (.followRedirects conn follow-redirects))
-  (if-not (nil? ignore-content-type) (.ignoreContentType conn ignore-content-type))
-  (if-not (nil? ignore-http-errors) (.ignoreHttpErrors conn ignore-http-errors))
-  (if-not (nil? headers) (doseq [[k v] headers] (.header conn k v))))
-  conn)   
+        headers    (get opts :headers)]
+  (doseq [v params]
+    (let [var  (get opts (keyword v))
+          vars (if (string? var) var (stringify-keys var))]
+    (if-not (nil? var) (invoke connection (to-fn-name v) vars))))
+  (if-not (nil? auth) (doseq [[k v] auth] (.header connection k v)))
+  (if-not (nil? headers) (doseq [[k v] headers] (.header connection k v)))) connection)
 
-(defn -connect[^Connection$Method method url & opts]
+(defn -connect [^Connection$Method method url & opts]
   "Creates a connection configured by the given opts."
   (let [connection (.method (org.jsoup.Jsoup/connect url) method)]
   (if-not (nil? opts) (-configure connection opts))
@@ -73,14 +67,14 @@
 
 (defn slurp! [location & opts]
   (let [content (apply slurp location opts)]
-  (if(nil? opts) (parse content) (apply parse content opts))))
+  (if (nil? opts) (parse content) (apply parse content opts))))
 
 (defmacro $ [doc & forms]
-  (let [exprs (map #(if (string? %) `(select ~%)
+  (let [exprs# (map #(if (string? %) `(select ~%)
                       (if (symbol? %) `(select ~(str %))
                          (if (keyword? %) `(select ~(str "#"(name %)))
                             %))) forms)]
-     `(->> ~doc ~@exprs))) ;; See apricot-soup @github ;)
+     `(->> ~doc ~@exprs#))) ;; See apricot-soup @github ;)
 
 (defn text [elements] (map #(.text %) elements))
 

@@ -4,23 +4,26 @@ Clojurized access for [Jsoup](http://jsoup.org/).
 
 ## Usage
 
-Getting all the links of a web page:
+Getting some links of a web page:
 
 ```clojure
-user=> (use 'jsoup.soup)
-nil
-user=> ($ (get! "http://google.com" :user-agent "CoCo/1.0") "a[href]" (attr "abs:href"))
-("http://www.google..." ...)
+(use 'jsoup.soup)
+
+($ 
+ (get! "http://google.com" :user-agent "CoCo/1.0") ;; get request with options
+ td "a[href]" ;; Jsoup selectors
+ (attr "abs:href")) ;; attribute selector
 ```
 A post with basic authentication:
 
 ```clojure
-($ (post! "http://127.0.0.1" 
-       :user-agent "CoCo/1.0" 
-       :follow-redirects true
-       :auth (basic-auth "night" "password")
-       :cookies {:user "night" :other "value"}
-       :data {:param "one" :another "2"}) td a)
+($ (post! "http://127.0.0.1"  
+        :user-agent "CoCo/1.0" 
+        :follow-redirects true
+        :auth (basic-auth "night" "password")
+        :cookies {:user "night" :other "value"}
+        :data {:param "one" :another "2"}) ;; post options & data
+ td a) ;; Jsoup selectors
 ```
 
 Parsing a local file:
