@@ -25,7 +25,7 @@
         headers    (get opts :headers)]
   (doseq [v params]
     (let [var  (get opts (keyword v))
-          vars (if (string? var) var (stringify-keys var))]
+          vars (if (map? var) (stringify-keys var) var)]
     (if-not (nil? var) (invoke connection (to-fn-name v) vars))))
   (if-not (nil? auth) (doseq [[k v] auth] (.header connection k v)))
   (if-not (nil? headers) (doseq [[k v] headers] (.header connection k v)))) connection)
