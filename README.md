@@ -2,9 +2,9 @@
 
 Clojurized access for [Jsoup](http://jsoup.org/).
 
-## Usage
+## Examples
 
-Getting some links of a web page:
+Get some links of a web page:
 
 ```clojure
 (use 'jsoup.soup)
@@ -13,7 +13,17 @@ Getting some links of a web page:
    td "a[href]" ;; Jsoup selectors
    (attr "abs:href")) ;; attribute selector
 ```
-A post with basic authentication:
+
+Get all Emoji names concatenated by single bars from 'emoji-cheat-sheet.com':
+
+```clojure
+($ (get! "http://www.emoji-cheat-sheet.com/") 
+   "li div:has(span.emoji)" (text) 
+   (map #(clojure.string/replace % ":" "")) 
+   (clojure.string/join "|")) 
+```
+
+Post with basic authentication:
 
 ```clojure
 ($ (post! "http://127.0.0.1"  
@@ -25,7 +35,7 @@ A post with basic authentication:
  td a) ;; Jsoup selectors
 ```
 
-Parsing a local file:
+Parse a local file:
 
 ```clojure
 ($ (slurp! "test-content.html" :encoding "UTF-8" :base-uri "http://base") "a[href]")
