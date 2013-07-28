@@ -5,4 +5,8 @@
 .lein-plugins
 .settings
 .project
-classes
+/classes/
+/lib/
+*jar
+/target/
+/targets/
