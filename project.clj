@@ -1,9 +1,9 @@
-(defproject clojure-soup "0.0.1"
+(defproject clojure-soup "0.1.0"
   :description "Clojurized access for Jsoup."
   :dependencies [
-        [org.clojure/clojure "1.4.0"]
-        [commons-codec "1.6"]
-        [org.jsoup/jsoup "1.6.2"]
+        [org.clojure/clojure "1.5.0"]
+        [commons-codec "1.8"]
+        [org.jsoup/jsoup "1.7.2"]
   ]
   :plugins [
         [lein-eclipse "1.0.0"]
