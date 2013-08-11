@@ -1,6 +1,26 @@
-# Closoup
+# Clojure Soup
 
 Clojurized access for [Jsoup](http://jsoup.org/).
+
+Current version: 0.1.0
+
+[Clojars page](https://clojars.org/clj-soup/clojure-soup)
+
+## Leiningen
+
+```
+[clj-soup/clojure-soup "0.1.0"]
+```
+
+## Maven
+```xml
+<dependency>
+  <groupId>clj-soup</groupId>
+  <artifactId>clojure-soup</artifactId>
+  <version>${clojure-soup.version}</version>
+</dependency>
+```
+
 
 ## Examples
 
