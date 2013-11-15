@@ -2,7 +2,7 @@
 
 Clojurized access for [Jsoup](http://jsoup.org/).
 
-![clojars version](https://clojars.org/clojure-soup/latest-version.svg)
+[![clojars version](https://clojars.org/clj-soup/clojure-soup/latest-version.svg)](https://clojars.org/clj-soup/clojure-soup)
 
 ## Leiningen
 
