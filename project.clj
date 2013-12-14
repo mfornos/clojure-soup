@@ -8,7 +8,7 @@
   :dependencies [
         [org.clojure/clojure "1.5.0"]
         [commons-codec "1.8"]
-        [org.jsoup/jsoup "1.7.2"]
+        [org.jsoup/jsoup "1.7.3"]
   ]
   :plugins [
         [lein-eclipse "1.0.0"]
