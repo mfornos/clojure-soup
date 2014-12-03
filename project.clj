@@ -1,4 +1,4 @@
-(defproject clj-soup/clojure-soup "0.1.1"
+(defproject clj-soup/clojure-soup "0.1.2"
   :description "Clojurized access for Jsoup."
   :url "https://github.com/mfornos/clojure-soup"
   :license {:name "Eclipse Public License - v 1.0"
