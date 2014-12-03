@@ -43,4 +43,6 @@ Parse a local file:
 ($ (slurp! "test-content.html" :encoding "UTF-8" :base-uri "http://base") "a[href]")
 ```
 
+[badge]
+
 EOF
