@@ -6,9 +6,9 @@
             :distribution :repo
             :comments "same as Clojure"}
   :dependencies [
-        [org.clojure/clojure "1.5.0"]
-        [commons-codec "1.8"]
-        [org.jsoup/jsoup "1.7.3"]
+        [org.clojure/clojure "1.6.0"]
+        [commons-codec "1.10"]
+        [org.jsoup/jsoup "1.8.1"]
   ]
   :plugins [
         [lein-eclipse "1.0.0"]
