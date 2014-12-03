@@ -43,6 +43,6 @@ Parse a local file:
 ($ (slurp! "test-content.html" :encoding "UTF-8" :base-uri "http://base") "a[href]")
 ```
 
-[badge]
+[![Build Status](https://travis-ci.org/mfornos/clojure-soup.svg?branch=master)](https://travis-ci.org/mfornos/clojure-soup)
 
 EOF
