@@ -9,7 +9,8 @@
 
 (def ^:private params 
   ["user-agent" "cookies", "data", "method", "referrer", "timeout", 
-   "url", "follow-redirects", "ignore-content-type", "ignore-http-errors"])
+   "url", "follow-redirects", "ignore-content-type", "ignore-http-errors",
+   "max-body-size"])
 
 (defn- to-fn-name [name] 
   (let [words (clojure.string/split name #"[\s_-]+")] 
